@@ -3,19 +3,21 @@ class Solution {
         int n=nums.length;
         List<List<Integer>> ans=new ArrayList<>();
         ArrayList<Integer> ds=new ArrayList<>();
-        backtrack1(0,nums,ds,ans);
+        backtrack1(0,nums,ans);
         return ans;
     }
-    static void backtrack1(int currInd,int[] nums,ArrayList<Integer> ds,List<List<Integer>> ans){
-        if(ds.size()==nums.length){
+    static void backtrack1(int currInd,int[] nums,List<List<Integer>> ans){
+        if(currInd==nums.length){
+            List<Integer> ds=new ArrayList<>();
+            for (int num : nums) {
+                ds.add(num);
+            }
             ans.add(new ArrayList<>(ds));
             return;
         }
         for(int i=currInd;i<nums.length;i++){
             swap(currInd,i,nums);
-            ds.add(nums[currInd]);
-            backtrack1(currInd+1,nums,ds,ans);
-            ds.remove(ds.size()-1);
+            backtrack1(currInd+1,nums,ans);
             swap(i,currInd,nums);
         }
     }
