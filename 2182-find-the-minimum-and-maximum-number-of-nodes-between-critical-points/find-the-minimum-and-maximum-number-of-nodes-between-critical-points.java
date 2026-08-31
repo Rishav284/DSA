@@ -10,28 +10,43 @@
  */
 class Solution {
     public int[] nodesBetweenCriticalPoints(ListNode head) {
-        ArrayList<Integer> possInd=new ArrayList<>();
-        int prevVal=head.val;
-        ListNode temp=head.next;
-        int ind=1;
-        while(temp!=null && temp.next!=null){
-            int currVal=temp.val;
-            int nextVal=temp.next.val;
-            if((currVal>prevVal && currVal>nextVal) || (currVal<prevVal && currVal<nextVal)){
-                possInd.add(ind);
+        int[] ans = new int[2];
+        int idx = 1;
+        int f_idx = -1;
+        int l_idx = -1;
+        int min_dist = Integer.MAX_VALUE;
+
+        ListNode a = head;
+        ListNode b = a.next;
+        ListNode c = b.next;
+        if(c==null){     // 2 nodes only
+            ans[0] = -1;
+            ans[1] = -1;
+            return ans;
+        }
+
+        while(c!=null){
+            if(b.val<a.val && b.val<c.val || b.val>a.val && b.val>c.val){
+                if(f_idx==-1) f_idx = idx;
+                if(l_idx!=-1) {
+                    int dist = idx - l_idx;
+                    min_dist = Math.min(dist,min_dist);
+                }
+                l_idx = idx;
             }
-            ind++;
-            prevVal=currVal;
-            temp=temp.next;
+
+            idx++;
+            a = a.next;
+            b = b.next;
+            c = c.next;      
         }
-        if(possInd.size()<2){
-            return new int[]{-1,-1};
-        }
-        int minDist=Integer.MAX_VALUE;
-        for(int i=0;i<possInd.size()-1;i++){
-            minDist=Math.min(minDist,possInd.get(i+1)-possInd.get(i));
-        }
-        int maxDist=possInd.get(possInd.size()-1)-possInd.get(0);
-        return new int[]{minDist,maxDist};
+        int max_dist = l_idx - f_idx; 
+        if(max_dist == 0)
+            max_dist = -1;
+        if(min_dist == Integer.MAX_VALUE)
+            min_dist = -1;
+        ans[0] = min_dist;
+        ans[1] = max_dist;
+        return ans;
     }
 }
