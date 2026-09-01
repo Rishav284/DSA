@@ -1,9 +1,10 @@
 class Solution {
     public int findMin(int[] nums){
         Queue<Integer> pq=new PriorityQueue<>();
-        for(int i=0;i<nums.length;i++){
-            pq.add(nums[i]);
+        pq.add(nums[0]);
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]<pq.peek()) pq.add(nums[i]);
         }
-        return pq.poll();
+        return pq.peek();
     }
 }
