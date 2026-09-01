@@ -1,10 +1,18 @@
 class Solution {
-    public int findMin(int[] nums){
-        Queue<Integer> pq=new PriorityQueue<>();
-        pq.add(nums[0]);
-        for(int i=1;i<nums.length;i++){
-            if(nums[i]<pq.peek()) pq.add(nums[i]);
+    public int findMin(int[] nums) {
+    int start = 0;
+    int end = nums.length - 1;
+    while (start < end) {
+        int mid = start + (end - start) / 2;
+        if (nums[mid] > nums[end]) {
+            // min is somewhere to the right of mid
+            start = mid + 1;
+        } else {
+            // nums[mid] <= nums[end] means mid could BE the min,
+            // so keep it in range instead of excluding it
+            end = mid;
         }
-        return pq.peek();
     }
+    return nums[start]; // start == end here, pointing at the minimum
+}
 }
