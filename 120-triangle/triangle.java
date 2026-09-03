@@ -3,26 +3,31 @@ class Solution {
         return minimumPathSum(triangle,triangle.size());
     }
     static int minimumPathSum(List<List<Integer>> triangle, int n) {
-        // Create dp array
-        int[][] dp = new int[n][n];
-
-        // Fill last row
+        // Create an array to store the next row
+        int[] front = new int[n];
+        // Create an array to store the current row
+        int[] cur = new int[n];
+        // Initialize front with last row of triangle
         for (int j = 0; j < n; j++) {
-            dp[n - 1][j] = triangle.get(n - 1).get(j);
+            front[j] = triangle.get(n - 1).get(j);
         }
-
-        // Fill rest of dp from bottom to top
+        // Traverse rows from bottom to top
         for (int i = n - 2; i >= 0; i--) {
-            for (int j = i; j >= 0; j--) {
-                // Take min of down and diagonal
-                int down = triangle.get(i).get(j) + dp[i + 1][j];
-                int diag = triangle.get(i).get(j) + dp[i + 1][j + 1];
-                dp[i][j] = Math.min(down, diag);
+            // Traverse elements in current row
+            for (int j = i; j >= 0; j--) {  
+                // Calculate path going down
+                int down = triangle.get(i).get(j) + front[j];
+                // Calculate path going diagonal
+                int diagonal = triangle.get(i).get(j) + front[j + 1];
+                // Store minimum in current row
+                cur[j] = Math.min(down, diagonal);
             }
+
+            // Update front row with current row
+            front = cur.clone();
         }
 
-        // Return top element
-        return dp[0][0];
+        // Return top element (minimum path sum)
+        return front[0];
     }
-
 }
