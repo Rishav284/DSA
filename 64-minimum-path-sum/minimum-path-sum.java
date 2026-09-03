@@ -6,17 +6,26 @@ class Solution {
         for (int[] row : dp) {
             Arrays.fill(row, -1);
         }
-        return memoization(r-1,c-1,grid,dp);
+        return tabulation(grid);
     }
-    static int memoization(int currRow,int currCol,int[][] grid,int[][] dp){
-        if(currRow==0 && currCol==0){
-            return grid[0][0];
+    static int tabulation(int[][] grid){
+        int m= grid.length;
+        int n= grid[0].length;
+        int[][] dp=new int[m][n];
+        for(int[] row: dp){
+            Arrays.fill(row,-1);
         }
-        if(dp[currRow][currCol]!=-1) return dp[currRow][currCol];
-        int down=Integer.MAX_VALUE;
-        int right=Integer.MAX_VALUE;
-        if(currRow>0) down=memoization(currRow-1,currCol,grid,dp);
-        if(currCol>0) right=memoization(currRow,currCol-1,grid,dp);
-        return dp[currRow][currCol]=grid[currRow][currCol]+Math.min(down,right);
+        dp[0][0]=grid[0][0];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(dp[i][j]!=-1) continue;
+                int down=Integer.MAX_VALUE;
+                int right=Integer.MAX_VALUE;
+                if(i>0) down=dp[i-1][j];
+                if(j>0) right=dp[i][j-1];
+                dp[i][j]=grid[i][j]+Math.min(down,right);
+            }
+        }
+        return dp[m-1][n-1];
     }
 }
