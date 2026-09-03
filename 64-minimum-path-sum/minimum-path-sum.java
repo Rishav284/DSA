@@ -1,14 +1,5 @@
 class Solution {
     public int minPathSum(int[][] grid) {
-        int r= grid.length;
-        int c= grid[0].length;
-        int[][] dp=new int[r][c];
-        for (int[] row : dp) {
-            Arrays.fill(row, -1);
-        }
-        return tabulation(grid);
-    }
-    static int tabulation(int[][] grid){
         int m= grid.length;
         int n= grid[0].length;
         int[][] dp=new int[m][n];
